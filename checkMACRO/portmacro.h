@@ -108,7 +108,6 @@ typedef struct {
 	volatile unsigned char *pxBitBand;
 } portSPINLOCK_TYPE;
 
-#define uxPortGetCurrentCPU()		portCORE_ID()
 static inline unsigned long portCORE_ID(void)
 {
 	unsigned long val;
@@ -119,21 +118,11 @@ static inline unsigned long portCORE_ID(void)
 /*-----------------------------------------------------------*/	
 
 /* Critical section management. */
-#define portENTER_CRITICAL( pxLock )			\
-{																					\
-	do{																			\
-		vTaskAcquireLock( pxLock )						\
-		__asm volatile ( "" ::: "memory" );		\	
-	}while(0);															\
-}
-
-#define portEXIT_CRITICAL()								\
-{																					\
-	do{																			\
-		__asm volatile ( "" ::: "memory" );		\	
-		vTaskReleaseLock( pxLock )						\
-	}while(0);															\
-}
+extern void vTaskEnterCritical();
+extern void vTaskExitCritical();
+#define portCRITICAL_NESTING_IN_TCB			1
+#define portENTER_CRITICAL()				vTaskEnterCritical()
+#define portEXIT_CRITICAL()					vTaskExitCritical()
 
 extern portBASE_TYPE xPortSetInterruptMask(void);
 extern void vPortClearInterruptMask(portBASE_TYPE);

@@ -55,6 +55,10 @@ void vPortStartFirstTask( void ) __attribute__ (( naked ));
 // Interrupt Handler code
 void vPortInstallInterruptHandler( void (*vHandler)(void *), void *pvParameter, unsigned long ulVector, unsigned char ucEdgeTriggered, unsigned char ucPriority, unsigned char ucProcessorTargets );
 
+// NEW_FROMA: xCoreFLAG
+static portBASE_TYPE xCore0Start = pdFALSE;
+static portBASE_TYPE xCore1Start = pdFALSE;
+
 // Linker defined variables
 extern unsigned long _etext;
 extern unsigned long _data;
@@ -181,8 +185,19 @@ void vPortYieldFromISR( void )
  */
 portBASE_TYPE xPortStartScheduler( void )
 {
+	configASSERT(configMAX_SYSCALL_INTERRUPT_PRIORITY);
+
+	//prvSetupStartScheduler();
+
 	/* Start the timer that generates the tick ISR.  Interrupts are disabled here already. */
 	prvSetupTimerInterrupt();
+
+	xCore0Start = pdTRUE;
+	__asm volatile( "dmb" ::: "memory" );
+
+	while( xCore1Start == pdFALSE){
+		__asm volatile ( "" ::: "memory" );
+	}
 
 	/* Install the interrupt handler. */
 	vPortInstallInterruptHandler( (void (*)(void *))vPortYieldFromISR, NULL, portSGI_YIELD_VECTOR_ID, pdTRUE, 
@@ -232,7 +247,7 @@ void vPortUART3Handler( void *pvParameter )
 
 #if configUSE_PREEMPTION == 1
 	/* If using preemption, also force a context switch. */
-//	vTaskSwitchContext();
+	vTaskSwitchContext();
 	portEND_SWITCHING_ISR(pdTRUE);
 #endif
 }
@@ -527,3 +542,26 @@ vSerialPutString(2,(const signed char * const)"abort_panic\r\n", strlen("abort_p
 	for (;;);
 }
 /*----------------------------------------------------------------------------*/
+
+/*
+ * NEW_FROMA: FUNCTION
+ */
+
+void vPortStartCore1(){
+	while(xCore0Start == pdFALSE){
+		__asm volatile ( "" ::: "memory" );
+	}
+	//main1();
+
+	__asm volatile ( "dsb" ::: "memory" );
+	xCore1Start = pdTRUE;
+
+	/* Install the interrupt handler. */
+	vPortInstallInterruptHandler( (void (*)(void *))vPortYieldFromISR, NULL, portSGI_YIELD_VECTOR_ID, pdTRUE, 
+			/* configMAX_SYSCALL_INTERRUPT_PRIORITY */ configKERNEL_INTERRUPT_PRIORITY, 1<<portCORE_ID() );
+
+	//portDISABLE_INTERRUPTS();
+	//
+	//prvPrepareStartScheduler();
+	//prvPortStartFirstTask();
+}

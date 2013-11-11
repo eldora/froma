@@ -136,6 +136,23 @@ typedef struct tskTaskControlBlock
 
 }tskTCB;
 
+typedef struct{
+	portSPINLOCK_TYPE xLock;
+	portBASE_TYPE xNest[portNUM_PROCESSORS];
+	unsigned long uxStat[portNUM_PROCESSORS];
+}xTaskLockType;
+
+typedef xTaskLockType portLOCK_TYPE;
+
+void vTaskLockInit(portLOCK_TYPE *pxLock);
+void vTaskAcquireLock(portLOCK_TYPE *pxLock);
+void vTaskReleaseLock(portLOCK_TYPE *pxLock);
+
+#define TASK_STATE_NOTCHANGE		0
+#define TASK_CREATED						1
+#define TASK_EXPIRED						2
+#define TASK_EVENT_OCCURRED			3
+
 /*
  * Used internally only.
  */
@@ -198,7 +215,7 @@ typedef struct xTASK_PARAMTERS
  * \page taskENTER_CRITICAL taskENTER_CRITICAL
  * \ingroup SchedulerControl
  */
-#define taskENTER_CRITICAL()		portENTER_CRITICAL()
+#define taskENTER_CRITICAL(pxLock)		portENTER_CRITICAL(pxLock)
 
 /**
  * task. h
@@ -212,7 +229,7 @@ typedef struct xTASK_PARAMTERS
  * \page taskEXIT_CRITICAL taskEXIT_CRITICAL
  * \ingroup SchedulerControl
  */
-#define taskEXIT_CRITICAL()			portEXIT_CRITICAL()
+#define taskEXIT_CRITICAL(pxLock)			portEXIT_CRITICAL(pxLock)
 
 /**
  * task. h
@@ -236,7 +253,7 @@ typedef struct xTASK_PARAMTERS
 
 /* Definitions returned by xTaskGetSchedulerState(). */
 #define taskSCHEDULER_NOT_STARTED	0
-#define taskSCHEDULER_RUNNING		1
+#define taskSCHEDULER_RUNNING			1
 #define taskSCHEDULER_SUSPENDED		2
 
 /*-----------------------------------------------------------

@@ -27,21 +27,6 @@ int main( void )
 	/* Initialise the Hardware. */
 	prvSetupHardware();
 
-	/* Start the standard demo tasks. */
-#if 0
-	vStartIntegerMathTasks( tskIDLE_PRIORITY );
-	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
-	vStartSemaphoreTasks( mainSEM_TEST_PRIORITY );
-	vStartBlockingQueueTasks( mainBLOCK_Q_PRIORITY );
-	vStartCountingSemaphoreTasks();
-	vStartDynamicPriorityTasks();
-	vStartMathTasks( tskIDLE_PRIORITY );
-	vStartGenericQueueTasks( mainGEN_Q_PRIORITY );
-	vStartQueuePeekTasks();
-	vStartRecursiveMutexTasks();
-	/*	vAltStartComTestTasks( tskIDLE_PRIORITY + 1, 3, 0 );	*/
-#endif
-
 	/* Start the tasks defined within the file. */
 	//xTaskCreate( vCheckTask, (const signed char *)"Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
 	//xTaskCreate( vPrimeTask, (const signed char *)"Prime", configMINIMAL_STACK_SIZE, &num, mainCHECK_TASK_PRIORITY, NULL );
