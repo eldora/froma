@@ -64,11 +64,11 @@ extern unsigned long _ebss;
 extern unsigned long _stack_top;
 
 //stack section
-__attribute__ ((section(".__stack0")))
-unsigned char __stack0[ configMAIN_STACK_SIZE ];
+//__attribute__ ((section(".__stack0")))
+//unsigned char __stack0[ configMAIN_STACK_SIZE ];
 
-__attribute__ ((section(".__stack1")))
-unsigned char __stack1[ configMAIN_STACK_SIZE ];
+//__attribute__ ((section(".__stack1")))
+//unsigned char __stack1[ configMAIN_STACK_SIZE ];
 
 char *itoa( int iIn, char *pcBuffer )
 {
