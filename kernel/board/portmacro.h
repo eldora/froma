@@ -294,6 +294,8 @@ static inline void portYIELD(void)
 #define portABORT_STACK_SIZE	( 256 )
 #define portSVC_STACK_SIZE		( 256 )
 
+#define configMAIN_STACK_SIZE	1024
+
 #ifdef __cplusplus
 }
 #endif

@@ -1,15 +1,14 @@
 NAME = FROMA
+SOURCE_DIR = ./
+BUILD_DIR = ./build
+CROSS_COMPILE ?= arm-none-eabi-
 
-CC = arm-none-eabi-gcc
-LD = arm-none-eabi-gcc
-OBJCOPY = arm-none-eabi-objcopy
+CC = $(CROSS_COMPILE)gcc
+LD = $(CROSS_COMPILE)gcc
+OBJCOPY = $(CROSS_COMPILE)objcopy
 
 DEFINES = 
-
 LIBS = 
-
-SOURCE_DIR = .
-BUILD_DIR = build
 
 C_OPTS =	-I. \
 			-I"$(SOURCE_DIR)/source/include" \
@@ -59,8 +58,6 @@ ALL_LDFLAGS =	$(ALL_LDFLAGS_BASE) \
 				-Wl,-T,FROMA.ld,-Map,FROMA.map
 
 AUTODEPENDENCY_CFLAGS=-MMD -MF$(@:.o=.d) -MT$@
-
-
 
 
 .SUFFIXES: .o .c .bin

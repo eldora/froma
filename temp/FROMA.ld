@@ -2,7 +2,8 @@ ENTRY(Vector_Init);
 
 MEMORY
 {
-	ram(rwx)	:	ORIGIN = 0x80000000, LENGTH = 512M
+	TEXT(rwx)	:	ORIGIN = 0x80000000, LENGTH = 256M
+	DATA(rwx)	:	ORIGIN = 0x90000000, LENGTH = 256M
 }
 
 SECTIONS
@@ -16,14 +17,14 @@ SECTIONS
         *(.text*)
         *(.rodata*)
         _etext = .;
-    } > ram 
+    } > TEXT
 
     .data :
     {
         _data = .;
         *(.data*)
         _edata = .;
-    } > ram
+    } > DATA
 
     .bss :
     {
@@ -32,7 +33,7 @@ SECTIONS
         *(.bss*)
         *(COMMON)
         _ebss = .;
-    } > ram
+    } > DATA
 
     .stack :
     {
@@ -40,6 +41,6 @@ SECTIONS
 			*(.__stack0);
 			. = ALIGN(8);
 			*(.__stack1);
-		} > ram
+		}
 }
 
