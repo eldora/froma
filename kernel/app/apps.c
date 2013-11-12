@@ -32,7 +32,7 @@ void vPrimeTask( void *pvParameters ){
 				vSerialPutString( (xComPortHandle)mainPRINT_PORT, (const signed char * const)primeBuf, strlen(primeBuf) );
 			}
 		}
-		sprintf(primeBuf, "\r\nTime: %4d\r\n", (xTaskGetTickCount() - xLastExecutionTime)/1000);
+		sprintf(primeBuf, "\r\nTime: %4d\r\n", (int)(xTaskGetTickCount() - xLastExecutionTime)/1000);
 		vSerialPutString( (xComPortHandle)mainPRINT_PORT, (const signed char * const)primeBuf, strlen(primeBuf) );
 
 		//xPrimeTaskStart = 0;

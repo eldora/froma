@@ -1,7 +1,7 @@
 #ifndef SYNC_H
 #define SYNC_H
 
-typedef struct spinlock_t {
+typedef volatile struct spinlock_t {
 	  int flag;
 }spinlock_t;
 

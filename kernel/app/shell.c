@@ -54,13 +54,13 @@ void vShellTask( void *pvParameters ){
 }
 
 void vExecuteCommand(const char *pcCommandBuffer){
-	int i, iSpaceIndex, iCommandTypeNumber;
+	int i, iCommandTypeNumber;
 	char *pcCommand;
 	char cTempBuffer[COMMAND_BUFFER_SIZE+20];
 
 	iCommandTypeNumber = sizeof(gsCommandTable)/sizeof(struct shellCommandEntry);
 
-	pcCommand = strtok(pcCommandBuffer, " ");
+	pcCommand = strtok((char *)pcCommandBuffer, " ");
 	for(i=0; i<iCommandTypeNumber; i++){
 		if(!strcmp(pcCommand, gsCommandTable[i].pcCommand)){
 			gsCommandTable[i].pvFunction(strtok(NULL, ""));
@@ -89,19 +89,7 @@ void vHelp(const char *pcParameterBuffer){
 }
 
 void vClear(const char *pcParameterBuffer){
-	portBASE_TYPE xTerminalHeight;
-
 	vSerialPutString((xComPortHandle)mainPRINT_PORT, (const signed char * const)"\033[2J", strlen("\033[2J"));
-#if 0	
-	xTerminalHeight = 50;
-	while(xTerminalHeight--)
-		vSerialPutString((xComPortHandle)mainPRINT_PORT, (const signed char * const)"\r\n", 2);
-	xTerminalHeight = 25;
-	while(xTerminalHeight--){
-		xSerialPutChar((xComPortHandle)mainPRINT_PORT, 224, portMAX_DELAY);
-		xSerialPutChar((xComPortHandle)mainPRINT_PORT, 72, portMAX_DELAY);
-	}
-#endif
 }
 
 void vVersion(const char *pcParameterBuffer){
@@ -117,7 +105,7 @@ void vVersion(const char *pcParameterBuffer){
 }
 
 void vPrime(const char *pcParameterBuffer){
-	extern int xPrimeTaskStart;
+	//extern int xPrimeTaskStart;
 	int num = 99999999;
 	//xPrimeTaskStart = 1;
 	//vTaskSuspend(xShellTaskHandle);
@@ -131,12 +119,12 @@ void vTaskState(const char *pcParameterBuffer){
 
 	xNumberOfTasks = uxTaskGetNumberOfTasks();
 
-	sprintf(cTempBuffer, "Number Of Tasks: %u\r\n", xNumberOfTasks);
+	sprintf(cTempBuffer, "Number Of Tasks: %u\r\n", (unsigned int) xNumberOfTasks);
 	vSerialPutString((xComPortHandle)mainPRINT_PORT, (const signed char * const)cTempBuffer, strlen(cTempBuffer));
 
-	sprintf(cTempBuffer, "Task Name\tStatus\tPrority\tStack\tNumber", xNumberOfTasks);
+	sprintf(cTempBuffer, "Task Name\tStatus\tPrority\tStack\tNumber");
 	vSerialPutString((xComPortHandle)mainPRINT_PORT, (const signed char * const)cTempBuffer, strlen(cTempBuffer));
 
-	vTaskList(cTempBuffer);
+	vTaskList((signed char *)cTempBuffer);
 	vSerialPutString((xComPortHandle)mainPRINT_PORT, (const signed char * const)cTempBuffer, strlen(cTempBuffer));
 }

@@ -1,0 +1,45 @@
+ENTRY(Vector_Init);
+
+MEMORY
+{
+	ram(rwx)	:	ORIGIN = 0x80000000, LENGTH = 512M
+}
+
+SECTIONS
+{
+    .text :
+    {
+        _text = .;
+        __isr_vector_start = .;
+        *(.isr_vector)
+        __isr_vector_end = .;
+        *(.text*)
+        *(.rodata*)
+        _etext = .;
+    } > ram 
+
+    .data :
+    {
+        _data = .;
+        *(.data*)
+        _edata = .;
+    } > ram
+
+    .bss :
+    {
+			. = ALIGN(4);
+        _bss = .;
+        *(.bss*)
+        *(COMMON)
+        _ebss = .;
+    } > ram
+
+    .stack :
+    {
+			. = ALIGN(8);
+			*(.__stack0);
+			. = ALIGN(8);
+			*(.__stack1);
+		} > ram
+}
+

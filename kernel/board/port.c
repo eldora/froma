@@ -397,7 +397,7 @@ extern int secondary_main( void );
 int i;
 unsigned long *pulSrc, *pulDest;
 volatile unsigned long ulSCTLR = 0UL;
-unsigned long ulValue = 0UL;
+//unsigned long ulValue = 0UL;
 extern unsigned long __isr_vector_start;
 extern unsigned long __isr_vector_end;
 extern unsigned long _bss;

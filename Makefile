@@ -12,11 +12,11 @@ LIBS =
 
 C_OPTS =	-I. \
 			-I"$(SOURCE_DIR)/source/include" \
-			-I"$(SOURCE_DIR)/common/include" \
 			-I"$(SOURCE_DIR)/kernel/include" \
 			-I"$(SOURCE_DIR)/kernel/app" \
 			-I"$(SOURCE_DIR)/kernel/board" \
 			-I"$(SOURCE_DIR)/kernel/sync" \
+			-I"$(SOURCE_DIR)/kernel/uart" \
 			-std=c99 \
 			-O3 \
 			-Wall \

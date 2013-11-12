@@ -12,18 +12,9 @@
 #include "queue.h"
 
 /* Demo Includes. */
-#include "integer.h"
-#include "PollQ.h"
-#include "semtest.h"
-#include "BlockQ.h"
-#include "countsem.h"
-#include "dynamic.h"
-#include "flop.h"
-#include "GenQTest.h"
-#include "QPeek.h"
-#include "recmutex.h"
+
+/* Uart Includes. */
 #include "serial.h"
-#include "comtest2.h"
 
 /* Application Includes. */
 #include "apps.h"
@@ -48,10 +39,10 @@
 #define mainGEN_Q_PRIORITY			( tskIDLE_PRIORITY )
 
 /* Misc. */
-#define mainQUEUE_SIZE				( 3 )
-#define mainNO_DELAY				( ( portTickType ) 0 )
+#define mainQUEUE_SIZE					( 3 )
+#define mainNO_DELAY						( ( portTickType ) 0 )
 
-#define mainPRINT_PORT				( configUART_PORT )
+#define mainPRINT_PORT					( configUART_PORT )
 #define mainPRINT_BAUDRATE			( 115200 )
 
 /*----------------------------------------------------------------------------*/

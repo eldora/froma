@@ -8,7 +8,7 @@ extern xTaskHandle xShellTaskHandle;
 
 int secondary_main( void )
 {
-	xTaskHandle xPrimeTaskHandle;
+	xTaskHandle xPrimeTaskHandle = NULL;
 	//char cAddress[20];
 	//sharedValue++;
 	prvSetupHardware();
@@ -26,21 +26,6 @@ int main( void )
 	sharedValue++;
 	/* Initialise the Hardware. */
 	prvSetupHardware();
-
-	/* Start the standard demo tasks. */
-#if 0
-	vStartIntegerMathTasks( tskIDLE_PRIORITY );
-	vStartPolledQueueTasks( mainQUEUE_POLL_PRIORITY );
-	vStartSemaphoreTasks( mainSEM_TEST_PRIORITY );
-	vStartBlockingQueueTasks( mainBLOCK_Q_PRIORITY );
-	vStartCountingSemaphoreTasks();
-	vStartDynamicPriorityTasks();
-	vStartMathTasks( tskIDLE_PRIORITY );
-	vStartGenericQueueTasks( mainGEN_Q_PRIORITY );
-	vStartQueuePeekTasks();
-	vStartRecursiveMutexTasks();
-	/*	vAltStartComTestTasks( tskIDLE_PRIORITY + 1, 3, 0 );	*/
-#endif
 
 	/* Start the tasks defined within the file. */
 	//xTaskCreate( vCheckTask, (const signed char *)"Check", configMINIMAL_STACK_SIZE, NULL, mainCHECK_TASK_PRIORITY, NULL );
@@ -75,85 +60,11 @@ void vApplicationIdleHook( void )
 }
 /*----------------------------------------------------------------------------*/
 
-static unsigned long prvReadP15_C1_C0_1( void )
-{
-	volatile unsigned long ulReturn = 0UL;
-	/* Read Configuration Register C15, c0, 0. */
-	__asm volatile(
-			" mrc p15, 0, %[retval], c1, c0, 1 			\n"
-			: [retval] "=r" (ulReturn) : :
-			);
-	return ulReturn;
-}
-/*----------------------------------------------------------------------------*/
-
-static unsigned long prvReadP15_C1_C0_2( void )
-{
-	volatile unsigned long ulReturn = 0UL;
-	/* Read Configuration Register C15, c0, 0. */
-	__asm volatile(
-			" mrc p15, 0, %[retval], c1, c0, 2 			\n"
-			: [retval] "=r" (ulReturn) : :
-			);
-	return ulReturn;
-}
-/*----------------------------------------------------------------------------*/
-
-static unsigned long prvReadP15_C1_C1_0( void )
-{
-	volatile unsigned long ulReturn = 0UL;
-	/* Read Configuration Register C15, c0, 0. */
-	__asm volatile(
-			" mrc p15, 0, %[retval], c1, c1, 0 			\n"
-			: [retval] "=r" (ulReturn) : :
-			);
-	return ulReturn;
-}
-/*----------------------------------------------------------------------------*/
-
-static unsigned long prvReadP15_C1_C1_1( void )
-{
-	volatile unsigned long ulReturn = 0UL;
-	/* Read Configuration Register C15, c0, 0. */
-	__asm volatile(
-			" mrc p15, 0, %[retval], c1, c1, 1 			\n"
-			: [retval] "=r" (ulReturn) : :
-			);
-	return ulReturn;
-}
-/*----------------------------------------------------------------------------*/
-
-static unsigned long prvReadP15_C1_C1_2( void )
-{
-	volatile unsigned long ulReturn = 0UL;
-	/* Read Configuration Register C15, c0, 0. */
-	__asm volatile(
-			" mrc p15, 0, %[retval], c1, c1, 2 			\n"
-			: [retval] "=r" (ulReturn) : :
-			);
-	return ulReturn;
-}
-
-/*----------------------------------------------------------------------------*/
-
-static unsigned long prvReadP15_C12_C0_1( void )
-{
-	volatile unsigned long ulReturn = 0UL;
-	/* Read Configuration Register C15, c0, 0. */
-	__asm volatile(
-			" mrc p15, 0, %[retval], c12, c0, 1 		\n"
-			: [retval] "=r" (ulReturn) : :
-			);
-	return ulReturn;
-}
-/*----------------------------------------------------------------------------*/
-
 static void prvSetupHardware( void )
 {
 	unsigned long ulVector = 0UL;
 	unsigned long ulValue = 0UL;
-	unsigned long looped = 99999999UL;
-	char cAddress[32];
+	//char cAddress[32];
 
 	ulValue = portCORE_ID();
 
